@@ -8,7 +8,7 @@ function App() {
       .catch(err => console.log(err));
   }, []);
 
-  return <h1>EcomPulse 🚀</h1>;
+  return <h1>Ahmed khemiri 🚀</h1>;
 }
 
 export default App;
