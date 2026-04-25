@@ -28,19 +28,16 @@ function Login() {
     try {
       const res = await login(form);
 
-      // sauvegarder token
       localStorage.setItem("token", res.data.token);
 
-      console.log("Login success:", res.data);
-
-      // redirection vers home
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
-      if (err.response?.data?.errors) {
-        setErrors(err.response.data.errors);
-      } else {
-        setErrors({ general: ["Invalid email or password"] });
-      }
+       setErrors(err.response.data.errors);
+       console.log(err.response.data);
+      // setErrors({
+      //   general: "Invalid credentials",
+      // });
+      
     } finally {
       setLoading(false);
     }
@@ -48,72 +45,41 @@ function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-        
+
         <h2 className="text-2xl font-bold text-center mb-6">
-          Welcome Back 👋
+          Login 
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          
-          {/* Email */}
-          <div>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {errors?.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email[0]}</p>
-            )}
-          </div>
 
-          {/* Password */}
-          <div>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {errors?.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password[0]}
-              </p>
-            )}
-          </div>
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg"
+          />
+            {errors?.email && <p className="text-red-500">{errors.email[0]}</p>}
 
-          {/* General error */}
-          {errors?.general && (
-            <p className="text-red-500 text-sm text-center">
-              {errors.general[0]}
-            </p>
-          )}
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg"
+          />
+            {errors?.password && <p className="text-red-500">{errors.password[0]}</p>}
+ 
 
-          {/* Button */}
           <button
-            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
-        </form>
 
-        {/* Link register */}
-        <p className="text-center text-sm mt-4">
-          Don’t have an account?{" "}
-          <span
-            onClick={() => navigate("/register")}
-            className="text-blue-600 cursor-pointer hover:underline"
-          >
-            Register
-          </span>
-        </p>
+        </form>
       </div>
     </div>
   );
