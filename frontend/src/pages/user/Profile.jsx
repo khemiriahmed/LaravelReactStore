@@ -83,7 +83,7 @@ function Profile() {
             className="w-16 h-16 rounded-full"
           />
 
-          <input type="file" onChange={handleFile} />
+          <input type="file" onChange={handleFile}  />
 
         </div>
 
@@ -93,6 +93,7 @@ function Profile() {
           value={form.name}
           onChange={handleChange}
           className="w-full border px-3 py-2 rounded"
+          placeholder="Name"
         />
         {errors?.name && (
           <p className="text-red-500 text-sm">{errors.name[0]}</p>
@@ -104,6 +105,7 @@ function Profile() {
           value={form.phone}
           onChange={handleChange}
           className="w-full border px-3 py-2 rounded"
+          placeholder="Phone"
         />
         {errors?.phone && (
           <p className="text-red-500 text-sm">{errors.phone[0]}</p>
