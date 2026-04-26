@@ -5,6 +5,11 @@ This project demonstrates a real-world full stack architecture with authenticati
 
 ---
 
+## 🚧 Project Status
+
+⚠️ This project is currently under active development.
+New features, improvements, and bug fixes are continuously being added.
+
 ## 🧠 Tech Stack
 
 ### 🔹 Backend
