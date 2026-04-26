@@ -58,7 +58,7 @@ public function logout(Request $request)
         ]);
     }
 
-    // ✅ Get current user
+    //  Get current user
     public function me(Request $request)
     {
         return response()->json($request->user());
