@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends Controller
 {
@@ -38,10 +39,17 @@ class ProductController extends Controller
     //  CREATE product
     public function store(StoreProductRequest $request)
     {
-        $product = Product::create([
+        $data = [
             ...$request->validated(),
             'slug' => Str::slug($request->name),
-        ]);
+        ];
+
+        //  upload image
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        $product = Product::create($data);
 
         return response()->json([
             'message' => 'Product created successfully',
