@@ -153,7 +153,7 @@ function AdminProductList() {
               <th className="p-3 text-center">Price</th>
               <th className="p-3 text-center">Stock</th>
               <th className="p-3 text-center">SKU</th>
-              <th className="p-3 ">Actions</th>
+              <th className="p-3  text-center">Actions</th>
             </tr>
           </thead>
 
