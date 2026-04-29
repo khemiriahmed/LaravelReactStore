@@ -1,91 +1,103 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
-import ProtectedRoute from "./ProtectedRoute";
+import AdminLayout from "../layouts/AdminLayout";
 
+import ProtectedRoute from "./ProtectedRoute";
+import AdminRoute from "./AdminRoute";
+
+// AUTH
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+
+// USER
 import Profile from "../pages/user/Profile";
 import Settings from "../pages/user/Settings";
+
+// FRONT PRODUCTS
 import ProductList from "../pages/products/ProductList";
 import ProductDetails from "../pages/products/ProductDetails";
 
-//admin
-import AdminRoute from "./AdminRoute";
+// ADMIN PRODUCTS
 import AdminProductList from "../pages/admin/products/AdminProductList";
 import AdminProductCreate from "../pages/admin/products/AdminProductCreate";
 import AdminProductShow from "../pages/admin/products/AdminProductShow";
 
-// pages simples
-const Home = () => <h1 className="text-center mt-10 text-2xl">Home </h1>;
+// 🆕 ADMIN CATEGORIES
+import AdminCategoryList from "../pages/admin/categories/AdminCategoryList";
 
-const Dashboard = () => (
-  <h1 className="text-center mt-10 text-2xl">Dashboard (Protected)</h1>
-);
+// 🆕 ADMIN DASHBOARD
+//import AdminDashboard from "../pages/admin/AdminDashboard";
+
+// simple pages
+const Home = () => <h1 className="text-center mt-10 text-2xl">Home</h1>;
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     children: [
+      { index: true, element: <Home /> },
+
       {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "dashboard",
-        element: (
-          <ProtectedRoute role="admin">
-            <Dashboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/profile",
+        path: "profile",
         element: <Profile />,
       },
       {
-        path: "/settings",
+        path: "settings",
         element: <Settings />,
       },
 
       {
-        path: "/products",
+        path: "products",
         element: <ProductList />,
       },
       {
-        path: "/products/:id",
+        path: "products/:id",
         element: <ProductDetails />,
       },
 
+      // =========================
+      // 🔐 ADMIN ROUTES (NEW STRUCTURE)
+      // =========================
       {
-        path: "/admin/products",
+        path: "admin",
         element: (
           <AdminRoute>
-            <AdminProductList />
+            <AdminLayout />
           </AdminRoute>
         ),
-      },
-      {
-        path: "/admin/products/create",
-        element: (
-          <AdminRoute>
-            <AdminProductCreate />
-          </AdminRoute>
-        ),
-      },
-      {
-        path: "/admin/products/:id",
-        element: (
-          <AdminRoute>
-            <AdminProductShow />
-          </AdminRoute>
-        ),
+
+        children: [
+          // {
+          //   path: "dashboard",
+          //   element: <AdminDashboard />,
+          // },
+
+          {
+            path: "products",
+            element: <AdminProductList />,
+          },
+          {
+            path: "products/create",
+            element: <AdminProductCreate />,
+          },
+          {
+            path: "products/:id",
+            element: <AdminProductShow />,
+          },
+
+          // 🆕 CATEGORIES
+          {
+            path: "categories",
+            element: <AdminCategoryList />,
+          },
+        ],
       },
     ],
   },
 
-  // pages sans navbar (auth)
+  // AUTH (no layout)
   {
     path: "/login",
     element: <Login />,
