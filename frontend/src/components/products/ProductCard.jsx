@@ -12,7 +12,7 @@ function ProductCard({ product }) {
       <h2 className="font-bold mt-2">{product.name}</h2>
 
       <p className="text-blue-600 font-semibold">
-        {product.price} TND
+        {product.price} TND 
       </p>
 
       <Link
