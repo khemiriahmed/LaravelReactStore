@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -20,7 +22,7 @@ class DashboardController extends Controller
 
         $totalStockValue = Product::sum(DB::raw('price * quantity'));
 
-        $totalSales = Order::sum('total_amount');
+        //$totalSales = Order::sum('total_amount');
 
         $topProducts = Product::orderBy('quantity', 'asc')
             ->limit(5)
