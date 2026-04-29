@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useProducts } from "../../../context/ProductContext";
 import { Link } from "react-router-dom";
 import ProductSidebar from "../../../components/admin/ProductSidebar";
@@ -14,6 +14,11 @@ function AdminProductList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [mode, setMode] = useState("view");
+
+  // 🔎 SEARCH + FILTER + SORT
+  const [search, setSearch] = useState("");
+  const [stockFilter, setStockFilter] = useState("all");
+  const [sortPrice, setSortPrice] = useState("none");
 
   // =========================
   // DELETE
@@ -46,18 +51,49 @@ function AdminProductList() {
   // STOCK BADGE
   // =========================
   const getStockBadge = (qty) => {
-    if (qty <= 5)
-      return { label: "LOW", color: "bg-red-500" };
-    if (qty <= 20)
-      return { label: "MEDIUM", color: "bg-yellow-500" };
+    if (qty <= 5) return { label: "LOW", color: "bg-red-500" };
+    if (qty <= 20) return { label: "MEDIUM", color: "bg-yellow-500" };
     return { label: "HIGH", color: "bg-green-500" };
   };
+
+  // =========================
+  // FILTER + SEARCH + SORT
+  // =========================
+  const filteredProducts = useMemo(() => {
+    let data = [...products];
+
+    // SEARCH
+    if (search) {
+      data = data.filter((p) =>
+        p.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    // STOCK FILTER
+    if (stockFilter === "low")
+      data = data.filter((p) => p.quantity <= 5);
+
+    if (stockFilter === "medium")
+      data = data.filter((p) => p.quantity > 5 && p.quantity <= 20);
+
+    if (stockFilter === "high")
+      data = data.filter((p) => p.quantity > 20);
+
+    // SORT PRICE
+    if (sortPrice === "asc")
+      data.sort((a, b) => a.price - b.price);
+
+    if (sortPrice === "desc")
+      data.sort((a, b) => b.price - a.price);
+
+    return data;
+  }, [products, search, stockFilter, sortPrice]);
 
   return (
     <div className="p-6">
 
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Products</h1>
 
         <Link
@@ -68,142 +104,137 @@ function AdminProductList() {
         </Link>
       </div>
 
+      {/* 🔥 SEARCH + FILTER + SORT */}
+      <div className="flex gap-3 mb-4 flex-wrap">
+
+        {/* SEARCH */}
+        <input
+          type="text"
+          placeholder="Search product..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border p-2 rounded w-64"
+        />
+
+        {/* STOCK FILTER */}
+        <select
+          value={stockFilter}
+          onChange={(e) => setStockFilter(e.target.value)}
+          className="border p-2 rounded"
+        >
+          <option value="all">All Stock</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+
+        {/* PRICE SORT */}
+        <select
+          value={sortPrice}
+          onChange={(e) => setSortPrice(e.target.value)}
+          className="border p-2 rounded"
+        >
+          <option value="none">Sort Price</option>
+          <option value="asc">Price ↑</option>
+          <option value="desc">Price ↓</option>
+        </select>
+      </div>
+
       {/* TABLE */}
       <div className="overflow-x-auto bg-white rounded shadow">
+
         <table className="w-full text-sm">
 
-          {/* HEADER */}
           <thead className="bg-gray-100 text-xs uppercase">
             <tr>
-              <th className="p-3 text-center">ID</th>
+               <th className="p-3 text-center">ID</th>
               <th className="p-3 text-center">Image</th>
               <th className="p-3 text-center">Name</th>
-              <th className="p-3 text-center">SKU</th>
               <th className="p-3 text-center">Price</th>
               <th className="p-3 text-center">Stock</th>
-              <th className="p-3 text-center">Category</th>
-              <th className="p-3 text-center">Actions</th>
+              <th className="p-3 text-center">SKU</th>
+              <th className="p-3 ">Actions</th>
             </tr>
           </thead>
 
-          {/* BODY */}
           <tbody>
-            {products.map((p, index) => {
-              const badge = getStockBadge(p.quantity);
+            {filteredProducts.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="text-center p-6 text-gray-500">
+                  No products found
+                </td>
+              </tr>
+            ) : (
+              filteredProducts.map((p) => {
+                const badge = getStockBadge(p.quantity);
 
-              return (
-                <tr
-                  key={p.id}
-                  className={`border-t ${
-                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                  }`}
-                >
+                return (
+                  <tr key={p.id} className="border-t">
 
-                  {/* ID */}
-                  <td className="p-3 text-center">{p.id}</td>
+                    {/* IMAGE SAFE */}
+                    <td className="p-3 text-center">{p.id}</td>
+                    <td className="p-3 text-center">
+                      {p.images?.length > 0 ? (
+                        <img
+                          src={p.images[0]?.image_path}
+                          className="m-auto w-12 h-12 object-cover rounded"
+                        />
+                      ) : (
+                        "—"
+                      )}
+                    </td>
 
-                  {/* IMAGE */}
-                  <td className="p-3 text-center">
-                   {p.images[0].image_path && (
-              <img height="50" width="50"
-                src={p.images[0].image_path}
-                className=" m-auto object-cover mb-3 rounded"
-              />
+                    <td className="p-3 text-center font-medium">{p.name}</td>
+
+                    <td className="p-3 text-center text-blue-600">
+                      {p.price} TND
+                    </td>
+
+                    <td className="p-3 text-center ">
+                      <span
+                        className={`${badge.color} text-white px-2 py-1 text-xs rounded`}
+                      >
+                        {badge.label} ({p.quantity})
+                      </span>
+                    </td>
+
+                    <td className="p-3 text-center text-gray-500">{p.sku}</td>
+
+                    <td className="p-3 text-center space-x-2">
+
+                      <button
+                        onClick={() => openSidebar(p, "view")}
+                        className="text-green-600"
+                      >
+                        View
+                      </button>
+
+                      <button
+                        onClick={() => openSidebar(p, "edit")}
+                        className="text-blue-600"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setDeleteId(p.id);
+                          setSelectedProduct(p);
+                          setIsModalOpen(true);
+                        }}
+                        className="text-red-500"
+                      >
+                        Delete
+                      </button>
+
+                    </td>
+                  </tr>
+                );
+              })
             )}
-                  </td>
-
-                  {/* NAME */}
-                  <td className="p-3 text-center font-medium">{p.name}</td>
-
-                  {/* SKU */}
-                  <td className="p-3 text-center text-gray-500">{p.sku}</td>
-
-                  {/* PRICE */}
-                  <td className="p-3 text-center text-blue-600 font-semibold">
-                    {p.price} TND
-                  </td>
-
-                  {/* STOCK BADGE */}
-                  <td className="p-3 text-center">
-                    <span
-                      className={`${badge.color} text-white px-2 py-1 text-xs rounded`}
-                    >
-                      {badge.label} ({p.quantity})
-                    </span>
-                  </td>
-
-                  {/* CATEGORY */}
-                  <td className="p-3 text-center">
-                    {p.category?.name || p.category_id}
-                  </td>
-
-                  {/* ACTIONS */}
-                  <td className="p-3 text-center space-x-2">
-
-                    <button
-                      onClick={() => openSidebar(p, "view")}
-                      className="text-green-600"
-                    >
-                      View
-                    </button>
-
-                    <button
-                      onClick={() => openSidebar(p, "edit")}
-                      className="text-blue-600"
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setDeleteId(p.id);
-                        setSelectedProduct(p);
-                        setIsModalOpen(true);
-                      }}
-                      className="text-red-500"
-                    >
-                      Delete
-                    </button>
-
-                  </td>
-                </tr>
-              );
-            })}
           </tbody>
+
         </table>
-      </div>
-
-      {/* PAGINATION */}
-      <div className="flex justify-center mt-6 space-x-2">
-        <button
-          disabled={meta.current_page === 1}
-          onClick={() => fetchProducts(meta.current_page - 1)}
-          className="px-3 py-1 border rounded"
-        >
-          Prev
-        </button>
-
-        {[...Array(meta.last_page || 1)].map((_, i) => (
-          <button
-            key={i}
-            onClick={() => fetchProducts(i + 1)}
-            className={`px-3 py-1 border rounded ${
-              meta.current_page === i + 1
-                ? "bg-blue-600 text-white"
-                : ""
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
-
-        <button
-          disabled={meta.current_page === meta.last_page}
-          onClick={() => fetchProducts(meta.current_page + 1)}
-          className="px-3 py-1 border rounded"
-        >
-          Next
-        </button>
       </div>
 
       {/* SIDEBAR */}
@@ -223,8 +254,7 @@ function AdminProductList() {
         onClose={closeModal}
         onConfirm={confirmDelete}
         title="Delete Product"
-        message={`Are you sure you want to delete "${selectedProduct?.name}" ?`}
-        product={selectedProduct}
+        message={`Delete "${selectedProduct?.name}" ?`}
       />
     </div>
   );
