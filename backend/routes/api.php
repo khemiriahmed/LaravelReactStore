@@ -23,13 +23,19 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+  Route::get('/user/me', [UserController::class, 'me']);
   Route::post('/profile/update', [UserController::class, 'update']);
   Route::post('/profile/password', [UserController::class, 'updatePassword']);
+  Route::delete('/user', [UserController::class, 'destroy']);
+
   Route::post('/products', [ProductController::class, 'store']);
   Route::apiResource('categories', CategoryController::class);
   Route::apiResource('products', ProductController::class);
   Route::post('/logout', [AuthController::class, 'logout']);
   Route::get('/user', [AuthController::class, 'me']);
+  // admin only
+  Route::get('/users', [UserController::class, 'index']);
+  Route::get('/users/{id}', [UserController::class, 'show']);
 
 });
 
