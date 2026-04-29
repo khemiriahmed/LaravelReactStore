@@ -5,88 +5,101 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // =========================
+    //  GET CURRENT USER
+    // =========================
+    public function me()
+    {
+        return response()->json([
+            'user' => Auth::user()
+        ]);
+    }
+
+    // =========================
+    //  ADMIN: LIST USERS
+    // =========================
     public function index()
     {
-        //
+        return response()->json(
+            User::latest()->paginate(10)
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // =========================
+    //  ADMIN: SHOW USER
+    // =========================
+    public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        return response()->json($user);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    // =========================
+    //  UPDATE PROFILE
+    // =========================
     public function update(UpdateProfileRequest $request)
     {
         $user = Auth::user();
 
-        // 📸 upload avatar
+        $data = $request->validated();
+
+        // 📸 avatar upload
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = '/storage/' . $path;
+            $data['avatar'] = '/storage/' . $path;
         }
 
-        // update data
-        $user->update([
-            'name' => $request->name,
-            'phone' => $request->phone,
-        ]);
+        $user->update($data);
 
         return response()->json([
+            'message' => 'Profile updated successfully',
             'user' => $user
         ]);
     }
 
-public function updatePassword(UpdatePasswordRequest $request)
-{
-    $user = auth()->user();
+    // =========================
+    //  UPDATE PASSWORD
+    // =========================
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $user = Auth::user();
 
-    // check current password
-    if (!Hash::check($request->current_password, $user->password)) {
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'errors' => [
+                    'current_password' => ['Incorrect password']
+                ]
+            ], 422);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
         return response()->json([
-            'errors' => [
-                'current_password' => ['Incorrect password']
-            ]
-        ], 422);
+            'message' => 'Password updated successfully'
+        ]);
     }
 
-    //  update password
-    $user->update([
-        'password' => Hash::make($request->password),
-    ]);
-
-    return response()->json([
-        'message' => 'Password updated successfully'
-    ]);
-}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // =========================
+    // DELETE ACCOUNT (USER)
+    // =========================
+    public function destroy()
     {
-        //
+        $user = Auth::user();
+
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Account deleted successfully'
+        ]);
     }
 }
