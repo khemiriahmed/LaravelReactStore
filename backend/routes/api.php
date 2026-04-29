@@ -39,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::get('/users/{id}', [UserController::class, 'show']);
 
 
+
   
   Route::get('/dashboard', [DashboardController::class, 'index']);
 
