@@ -20,8 +20,13 @@ export const updateProduct = (id, data) => {
   });
 };
 
-export const getProducts = (params = {}) => {
-  return api.get("/products", { params });
+export const getProducts = (page = 1, params = {}) => {
+  return api.get("/products", {
+    params: {
+      page,
+      ...params,
+    },
+  });
 };
 
 //  get single product

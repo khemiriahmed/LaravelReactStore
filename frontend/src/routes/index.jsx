@@ -25,6 +25,7 @@ import AdminProductShow from "../pages/admin/products/AdminProductShow";
 
 // 🆕 ADMIN CATEGORIES
 import AdminCategoryList from "../pages/admin/categories/AdminCategoryList";
+import AdminCategoryCreate from "../pages/admin/categories/AdminCategoryCreate";
 
 // 🆕 ADMIN DASHBOARD
 //import AdminDashboard from "../pages/admin/AdminDashboard";
@@ -87,10 +88,15 @@ export const router = createBrowserRouter([
             element: <AdminProductShow />,
           },
 
-          // 🆕 CATEGORIES
+          //  CATEGORIES
           {
             path: "categories",
             element: <AdminCategoryList />,
+          },
+
+          {
+            path: "categories/create",
+            element: <AdminCategoryCreate />,
           },
         ],
       },
