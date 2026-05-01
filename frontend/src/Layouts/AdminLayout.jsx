@@ -27,14 +27,14 @@ function AdminLayout() {
         {/* NAV */}
         <nav className="flex-1 p-4 space-y-2">
 
-          <NavLink
+          {/* <NavLink
             to="/admin/dashboard"
             className={({ isActive }) =>
               `${navItem} ${isActive ? activeItem : ""}`
             }
           >
             📊 Dashboard
-          </NavLink>
+          </NavLink> */}
 
           <NavLink
             to="/admin/products"
