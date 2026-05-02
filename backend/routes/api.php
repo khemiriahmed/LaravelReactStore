@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
@@ -36,6 +37,13 @@ Route::middleware('auth:sanctum')->group(function () {
   // admin only
   Route::get('/users', [UserController::class, 'index']);
   Route::get('/users/{id}', [UserController::class, 'show']);
+
+
+  Route::get('/cart', [CartController::class, 'index']);
+  Route::post('/cart/add', [CartController::class, 'add']);
+  Route::put('/cart/update/{id}', [CartController::class, 'update']);
+  Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
+  Route::delete('/cart/clear', [CartController::class, 'clear']);
 
 });
 
