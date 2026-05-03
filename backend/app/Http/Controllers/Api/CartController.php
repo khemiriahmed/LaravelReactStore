@@ -1,32 +1,36 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CartAddRequest;
+use App\Http\Requests\CartUpdateRequest;
 use App\Models\Cart;
 use App\Models\CartItem;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    // 🛒 GET USER CART
+    /**
+     *  Get current user cart
+     */
     public function index()
     {
         $cart = Cart::with('items.product.images')
-            ->firstOrCreate(['user_id' => Auth::id()]);
+            ->firstOrCreate([
+                'user_id' => Auth::id()
+            ]);
 
-        return response()->json($cart);
+        return response()->json([
+            'data' => $cart
+        ]);
     }
 
-    //  ADD TO CART
-    public function add(Request $request)
+    /**
+     *  Add product to cart
+     */
+    public function add(CartAddRequest $request)
     {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'nullable|integer|min:1'
-        ]);
-
         $cart = Cart::firstOrCreate([
             'user_id' => Auth::id()
         ]);
@@ -46,31 +50,46 @@ class CartController extends Controller
             ]);
         }
 
-        return $this->index();
+        return response()->json([
+            'message' => 'Product added to cart',
+            'data' => $this->getCart()
+        ]);
     }
 
-    //  UPDATE QUANTITY
-    public function update(Request $request, $id)
+    /**
+     *  Update item quantity
+     */
+    public function update(CartUpdateRequest $request, $id)
     {
-        $request->validate([
-            'quantity' => 'required|integer|min:1'
+        $item = $this->findUserCartItem($id);
+
+        $item->update([
+            'quantity' => $request->quantity
         ]);
 
-        $item = CartItem::findOrFail($id);
-        $item->update(['quantity' => $request->quantity]);
-
-        return response()->json(['message' => 'Updated']);
+        return response()->json([
+            'message' => 'Cart updated',
+            'data' => $this->getCart()
+        ]);
     }
 
-    //  REMOVE ITEM
+    /**
+     *  Remove item
+     */
     public function remove($id)
     {
-        CartItem::findOrFail($id)->delete();
+        $item = $this->findUserCartItem($id);
+        $item->delete();
 
-        return response()->json(['message' => 'Removed']);
+        return response()->json([
+            'message' => 'Item removed',
+            'data' => $this->getCart()
+        ]);
     }
 
-    //  CLEAR CART
+    /**
+     *  Clear cart
+     */
     public function clear()
     {
         $cart = Cart::where('user_id', Auth::id())->first();
@@ -79,6 +98,29 @@ class CartController extends Controller
             $cart->items()->delete();
         }
 
-        return response()->json(['message' => 'Cart cleared']);
+        return response()->json([
+            'message' => 'Cart cleared',
+            'data' => $this->getCart()
+        ]);
+    }
+
+    /**
+     *  Helper: Get cart with relations
+     */
+    private function getCart()
+    {
+        return Cart::with('items.product.images')
+            ->where('user_id', Auth::id())
+            ->first();
+    }
+
+    /**
+     *  Helper: secure item access
+     */
+    private function findUserCartItem($id)
+    {
+        return CartItem::whereHas('cart', function ($q) {
+            $q->where('user_id', Auth::id());
+        })->findOrFail($id);
     }
 }
