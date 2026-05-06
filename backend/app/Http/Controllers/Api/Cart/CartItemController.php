@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class CartItemController extends Controller
 {
     /**
-     * ➕ Add item to cart
+     *  Add item to cart
      */
     public function store(CartAddRequest $request)
     {
@@ -40,7 +40,7 @@ class CartItemController extends Controller
     }
 
     /**
-     * 🔄 Update quantity
+     *  Update quantity
      */
     public function update(CartUpdateRequest $request, $id)
     {
@@ -57,7 +57,7 @@ class CartItemController extends Controller
     }
 
     /**
-     * ❌ Delete item
+     *  Delete item
      */
     public function destroy($id)
     {
@@ -71,7 +71,7 @@ class CartItemController extends Controller
     }
 
     /**
-     * 🧹 Clear all items
+     *  Clear all items
      */
     public function clear()
     {
@@ -87,7 +87,7 @@ class CartItemController extends Controller
 
     /**
      * =========================
-     * 🔐 HELPERS
+     *  HELPERS
      * =========================
      */
 
