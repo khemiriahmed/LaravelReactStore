@@ -1,4 +1,4 @@
-import api from "../api/axios";
+import api from "../../api/axios";
 
 // GET CART
 export const getCart = async () => {
