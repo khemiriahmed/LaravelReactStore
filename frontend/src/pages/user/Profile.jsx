@@ -54,7 +54,6 @@ function Profile() {
         user: res.data.user,
         token: localStorage.getItem("token"),
       });
-
     } catch (err) {
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
@@ -69,7 +68,6 @@ function Profile() {
       <h2 className="text-xl font-bold mb-4">My Profile 👤</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-
         {/* Avatar */}
         <div className="flex items-center gap-4">
           <img
@@ -77,14 +75,13 @@ function Profile() {
               preview
                 ? preview
                 : user?.avatar
-                ? "http://localhost:8000" + user.avatar
-                : "https://ui-avatars.com/api/?name=" + user?.name
+                  ? "http://localhost:8000" + user.avatar
+                  : "https://ui-avatars.com/api/?name=" + user?.name
             }
             className="w-16 h-16 rounded-full"
           />
 
-          <input type="file" onChange={handleFile}  />
-
+          <input type="file" onChange={handleFile} />
         </div>
 
         {/* Name */}
@@ -114,7 +111,6 @@ function Profile() {
         <button className="w-full bg-blue-600 text-white py-2 rounded">
           {loading ? "Updating..." : "Update Profile"}
         </button>
-
       </form>
     </div>
   );

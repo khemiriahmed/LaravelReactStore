@@ -16,9 +16,7 @@ function AdminProductShow() {
       <p>Price: {product.price}</p>
       <p>Stock: {product.quantity}</p>
 
-      {product.image && (
-        <img src={product.image} className="w-40 mt-4" />
-      )}
+      {product.image && <img src={product.image} className="w-40 mt-4" />}
     </div>
   );
 }

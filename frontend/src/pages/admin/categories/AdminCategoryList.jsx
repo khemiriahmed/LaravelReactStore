@@ -49,7 +49,7 @@ function AdminCategoryList() {
     // SEARCH
     if (search) {
       data = data.filter((c) =>
-        c.name.toLowerCase().includes(search.toLowerCase())
+        c.name.toLowerCase().includes(search.toLowerCase()),
       );
     }
 
@@ -67,7 +67,6 @@ function AdminCategoryList() {
 
   return (
     <div className="p-6">
-
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Categories</h1>
@@ -83,7 +82,6 @@ function AdminCategoryList() {
 
       {/*  SEARCH + SORT */}
       <div className="flex gap-3 mb-4 flex-wrap">
-
         <input
           type="text"
           placeholder="Search category..."
@@ -101,14 +99,11 @@ function AdminCategoryList() {
           <option value="asc">A → Z</option>
           <option value="desc">Z → A</option>
         </select>
-
       </div>
 
       {/* TABLE */}
       <div className="overflow-x-auto bg-white rounded shadow">
-
         <table className="w-full text-sm">
-
           <thead className="bg-gray-100 text-xs uppercase">
             <tr>
               <th className="p-3 text-center">ID</th>
@@ -138,17 +133,13 @@ function AdminCategoryList() {
 
                   <td className="p-3 text-center font-medium">{c.name}</td>
 
-                  <td className="p-3 text-center text-gray-500">
-                    {c.slug}
-                  </td>
+                  <td className="p-3 text-center text-gray-500">{c.slug}</td>
 
                   {/* STATUS */}
                   <td className="p-3 text-center">
                     <span
                       className={`px-2 py-1 text-xs rounded text-white ${
-                        c.is_active
-                          ? "bg-green-500"
-                          : "bg-red-500"
+                        c.is_active ? "bg-green-500" : "bg-red-500"
                       }`}
                     >
                       {c.is_active ? "Active" : "Inactive"}
@@ -157,7 +148,6 @@ function AdminCategoryList() {
 
                   {/* ACTIONS */}
                   <td className="p-3 text-center space-x-2">
-
                     <button
                       onClick={() => openSidebar(c, "view")}
                       className="text-green-600"
@@ -182,13 +172,11 @@ function AdminCategoryList() {
                     >
                       Delete
                     </button>
-
                   </td>
                 </tr>
               ))
             )}
           </tbody>
-
         </table>
       </div>
 

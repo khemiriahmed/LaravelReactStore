@@ -32,11 +32,11 @@ function Login() {
 
       loginUser(res.data);
 
-       const role = res.data.user.role;
+      const role = res.data.user.role;
 
-    if (role === "admin") navigate("/admin/products");
-    else if (role === "vendor") navigate("/vendor/dashboard");
-    else navigate("/profile");
+      if (role === "admin") navigate("/admin/products");
+      else if (role === "vendor") navigate("/vendor/dashboard");
+      else navigate("/profile");
     } catch (err) {
       setErrors(err.response.data.errors);
       console.log(err.response.data);
