@@ -50,13 +50,9 @@ function AdminCategoryCreate() {
 
   return (
     <div className="max-w-xl mx-auto bg-white p-6 rounded shadow">
-
-      <h1 className="text-xl font-bold mb-6">
-        ➕ Create Category
-      </h1>
+      <h1 className="text-xl font-bold mb-6">➕ Create Category</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-
         {/* NAME */}
         <div>
           <label className="block text-sm mb-1">Name</label>
@@ -104,7 +100,6 @@ function AdminCategoryCreate() {
         >
           {loading ? "Creating..." : "Create Category"}
         </button>
-
       </form>
     </div>
   );

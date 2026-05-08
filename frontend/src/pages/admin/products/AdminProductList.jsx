@@ -65,33 +65,28 @@ function AdminProductList() {
     // SEARCH
     if (search) {
       data = data.filter((p) =>
-        p.name.toLowerCase().includes(search.toLowerCase())
+        p.name.toLowerCase().includes(search.toLowerCase()),
       );
     }
 
     // STOCK FILTER
-    if (stockFilter === "low")
-      data = data.filter((p) => p.quantity <= 5);
+    if (stockFilter === "low") data = data.filter((p) => p.quantity <= 5);
 
     if (stockFilter === "medium")
       data = data.filter((p) => p.quantity > 5 && p.quantity <= 20);
 
-    if (stockFilter === "high")
-      data = data.filter((p) => p.quantity > 20);
+    if (stockFilter === "high") data = data.filter((p) => p.quantity > 20);
 
     // SORT PRICE
-    if (sortPrice === "asc")
-      data.sort((a, b) => a.price - b.price);
+    if (sortPrice === "asc") data.sort((a, b) => a.price - b.price);
 
-    if (sortPrice === "desc")
-      data.sort((a, b) => b.price - a.price);
+    if (sortPrice === "desc") data.sort((a, b) => b.price - a.price);
 
     return data;
   }, [products, search, stockFilter, sortPrice]);
 
   return (
     <div className="p-6">
-
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Products</h1>
@@ -106,7 +101,6 @@ function AdminProductList() {
 
       {/* 🔥 SEARCH + FILTER + SORT */}
       <div className="flex gap-3 mb-4 flex-wrap">
-
         {/* SEARCH */}
         <input
           type="text"
@@ -142,12 +136,10 @@ function AdminProductList() {
 
       {/* TABLE */}
       <div className="overflow-x-auto bg-white rounded shadow">
-
         <table className="w-full text-sm">
-
           <thead className="bg-gray-100 text-xs uppercase">
             <tr>
-               <th className="p-3 text-center">ID</th>
+              <th className="p-3 text-center">ID</th>
               <th className="p-3 text-center">Image</th>
               <th className="p-3 text-center">Name</th>
               <th className="p-3 text-center">Price</th>
@@ -170,7 +162,6 @@ function AdminProductList() {
 
                 return (
                   <tr key={p.id} className="border-t">
-
                     {/* IMAGE SAFE */}
                     <td className="p-3 text-center">{p.id}</td>
                     <td className="p-3 text-center">
@@ -201,7 +192,6 @@ function AdminProductList() {
                     <td className="p-3 text-center text-gray-500">{p.sku}</td>
 
                     <td className="p-3 text-center space-x-2">
-
                       <button
                         onClick={() => openSidebar(p, "view")}
                         className="text-green-600"
@@ -226,14 +216,12 @@ function AdminProductList() {
                       >
                         Delete
                       </button>
-
                     </td>
                   </tr>
                 );
               })
             )}
           </tbody>
-
         </table>
       </div>
 

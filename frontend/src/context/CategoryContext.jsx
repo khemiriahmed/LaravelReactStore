@@ -32,7 +32,13 @@ export const CategoryProvider = ({ children }) => {
 
   return (
     <CategoryContext.Provider
-      value={{ categories, fetchCategories, addCategory, editCategory, removeCategory }}
+      value={{
+        categories,
+        fetchCategories,
+        addCategory,
+        editCategory,
+        removeCategory,
+      }}
     >
       {children}
     </CategoryContext.Provider>

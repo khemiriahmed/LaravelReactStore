@@ -59,7 +59,6 @@ function AdminProductCreate() {
       <h1 className="text-xl font-bold mb-4">Create Product</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-
         {/* Name */}
         <input
           name="name"
@@ -77,7 +76,7 @@ function AdminProductCreate() {
           onChange={handleChange}
           className="w-full border p-2 rounded"
         />
-          {errors.price && <p className="text-red-500">{errors.price[0]}</p>}
+        {errors.price && <p className="text-red-500">{errors.price[0]}</p>}
 
         {/* Quantity */}
         <input
@@ -87,7 +86,9 @@ function AdminProductCreate() {
           onChange={handleChange}
           className="w-full border p-2 rounded"
         />
-          {errors.quantity && <p className="text-red-500">{errors.quantity[0]}</p>}
+        {errors.quantity && (
+          <p className="text-red-500">{errors.quantity[0]}</p>
+        )}
 
         {/* SKU */}
         <input
@@ -97,7 +98,7 @@ function AdminProductCreate() {
           className="w-full border p-2 rounded"
         />
 
-          {errors.sku && <p className="text-red-500">{errors.sku[0]}</p>}
+        {errors.sku && <p className="text-red-500">{errors.sku[0]}</p>}
 
         {/* Category */}
         <select
@@ -113,8 +114,9 @@ function AdminProductCreate() {
           ))}
         </select>
 
-        {errors.category_id && <p className="text-red-500">{errors.category_id[0]}</p>}
-        
+        {errors.category_id && (
+          <p className="text-red-500">{errors.category_id[0]}</p>
+        )}
 
         {/* Description */}
         <textarea
@@ -123,8 +125,9 @@ function AdminProductCreate() {
           onChange={handleChange}
           className="w-full border p-2 rounded"
         />
-        {errors.description && <p className="text-red-500">{errors.description[0]}</p>}
-        
+        {errors.description && (
+          <p className="text-red-500">{errors.description[0]}</p>
+        )}
 
         {/* Image upload */}
         <input
@@ -132,8 +135,6 @@ function AdminProductCreate() {
           onChange={(e) => setImage(e.target.files[0])}
           className="w-full"
         />
-
-        
 
         {/* Submit */}
         <button className="w-full bg-blue-600 text-white py-2 rounded">

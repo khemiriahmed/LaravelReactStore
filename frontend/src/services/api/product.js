@@ -2,7 +2,6 @@ import api from "../../api/axios";
 
 //  get products
 
-
 export const createProduct = (data) => {
   return api.post("/products", data, {
     headers: {
@@ -10,7 +9,6 @@ export const createProduct = (data) => {
     },
   });
 };
-
 
 export const updateProduct = (id, data) => {
   return api.post(`/products/${id}`, data, {

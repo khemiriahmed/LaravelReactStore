@@ -38,7 +38,6 @@ function Settings() {
         password: "",
         password_confirmation: "",
       });
-
     } catch (err) {
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
@@ -50,15 +49,22 @@ function Settings() {
 
   return (
     <div className="max-w-lg mx-auto mt-10 space-y-6">
-
       {/* 🔹 Infos utilisateur */}
       <div className="bg-white p-6 rounded shadow">
         <h2 className="text-lg font-bold mb-4">Account Info ⚙️</h2>
 
-        <p><strong>Name:</strong> {user?.name}</p>
-        <p><strong>Email:</strong> {user?.email}</p>
-        <p><strong>Role:</strong> {user?.role}</p>
-        <p><strong>Status:</strong> {user?.status}</p>
+        <p>
+          <strong>Name:</strong> {user?.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {user?.email}
+        </p>
+        <p>
+          <strong>Role:</strong> {user?.role}
+        </p>
+        <p>
+          <strong>Status:</strong> {user?.status}
+        </p>
       </div>
 
       {/* 🔐 Change Password */}
@@ -66,7 +72,6 @@ function Settings() {
         <h2 className="text-lg font-bold mb-4">Change Password 🔐</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-
           <input
             type="password"
             name="current_password"
@@ -76,9 +81,7 @@ function Settings() {
             className="w-full border px-3 py-2 rounded"
           />
           {errors?.current_password && (
-            <p className="text-red-500 text-sm">
-              {errors.current_password[0]}
-            </p>
+            <p className="text-red-500 text-sm">{errors.current_password[0]}</p>
           )}
 
           <input
@@ -90,9 +93,7 @@ function Settings() {
             className="w-full border px-3 py-2 rounded"
           />
           {errors?.password && (
-            <p className="text-red-500 text-sm">
-              {errors.password[0]}
-            </p>
+            <p className="text-red-500 text-sm">{errors.password[0]}</p>
           )}
 
           <input
@@ -108,10 +109,7 @@ function Settings() {
             {loading ? "Updating..." : "Update Password"}
           </button>
 
-          {message && (
-            <p className="text-green-600 text-center">{message}</p>
-          )}
-
+          {message && <p className="text-green-600 text-center">{message}</p>}
         </form>
       </div>
 
@@ -124,7 +122,6 @@ function Settings() {
           Logout 🚪
         </button>
       </div>
-
     </div>
   );
 }

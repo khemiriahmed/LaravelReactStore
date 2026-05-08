@@ -8,7 +8,7 @@ export const ProductProvider = ({ children }) => {
   const [meta, setMeta] = useState({});
 
   const fetchProducts = async (page = 1) => {
-   const res = await getProducts(page);
+    const res = await getProducts(page);
 
     setProducts(res.data.data);
     setMeta(res.data);
@@ -24,7 +24,9 @@ export const ProductProvider = ({ children }) => {
   };
 
   return (
-    <ProductContext.Provider value={{ products, meta, fetchProducts, removeProduct }}>
+    <ProductContext.Provider
+      value={{ products, meta, fetchProducts, removeProduct }}
+    >
       {children}
     </ProductContext.Provider>
   );

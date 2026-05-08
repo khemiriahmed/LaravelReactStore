@@ -31,8 +31,9 @@ function CategorySidebar({ category, isOpen, onClose, mode, onUpdated }) {
   if (!category) return null;
 
   return (
-    <div className={`fixed inset-0 z-50 flex ${isOpen ? "" : "pointer-events-none"}`}>
-
+    <div
+      className={`fixed inset-0 z-50 flex ${isOpen ? "" : "pointer-events-none"}`}
+    >
       {/* overlay */}
       <div
         className={`fixed inset-0 bg-black/40 ${isOpen ? "opacity-100" : "opacity-0"}`}
@@ -67,7 +68,10 @@ function CategorySidebar({ category, isOpen, onClose, mode, onUpdated }) {
 
             {errors.name && <p className="text-red-500">{errors.name[0]}</p>}
 
-            <button onClick={handleUpdate} className="bg-blue-600 text-white mt-4 p-2 w-full">
+            <button
+              onClick={handleUpdate}
+              className="bg-blue-600 text-white mt-4 p-2 w-full"
+            >
               Save
             </button>
           </>

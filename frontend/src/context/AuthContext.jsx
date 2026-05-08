@@ -12,7 +12,8 @@ export const AuthProvider = ({ children }) => {
   // charger user connecté
   useEffect(() => {
     if (token) {
-      api.get("/user")
+      api
+        .get("/user")
         .then((res) => {
           setUser(res.data);
         })
