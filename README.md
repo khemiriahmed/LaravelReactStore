@@ -95,14 +95,12 @@ cd frontend
 npm install
 npm run dev
 ```
-
 ---
 
 ## 🔐 API Authentication
 
 This project uses **Laravel Sanctum** for secure authentication.
 Make sure to configure CORS and credentials correctly.
-
 
 ---
 
