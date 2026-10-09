@@ -24,4 +24,17 @@ class ProductImage extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
+    public function getImagePathAttribute($value)
+    {
+        if (!$value) {
+            return null;
+        }
+
+        if (str_starts_with($value, 'http')) {
+            return $value;
+        }
+
+        return asset('storage/' . ltrim($value, '/'));
+    }
 }

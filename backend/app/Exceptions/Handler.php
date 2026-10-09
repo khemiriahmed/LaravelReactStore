@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -35,6 +36,22 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
+
+    /**
+     * Always answer API requests with JSON 401 instead of a redirect.
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        $isApi = $request->expectsJson() || $request->is('api/*');
+
+        if ($isApi) {
+            return response()->json([
+                'message' => $exception->getMessage() ?: 'Unauthenticated.'
+            ], 401);
+        }
+
+        return redirect()->guest($exception->redirectTo() ?? route('login'));
+    }
 
     /**
      * Register the exception handling callbacks for the application.

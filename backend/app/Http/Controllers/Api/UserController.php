@@ -54,7 +54,7 @@ class UserController extends Controller
         // 📸 avatar upload
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
-            $data['avatar'] = '/storage/' . $path;
+            $data['avatar'] = $path;
         }
 
         $user->update($data);

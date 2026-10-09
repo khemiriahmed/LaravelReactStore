@@ -22,6 +22,9 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'role',
+        'status',
+        'avatar',
     ];
 
     /**
@@ -42,4 +45,36 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function getAvatarAttribute($value)
+    {
+        if (!$value) {
+            return null;
+        }
+
+        if (str_starts_with($value, 'http')) {
+            return $value;
+        }
+
+        $path = str_starts_with($value, '/storage/')
+            ? substr($value, strlen('/storage/'))
+            : $value;
+
+        return asset('storage/' . ltrim($path, '/'));
+    }
 }

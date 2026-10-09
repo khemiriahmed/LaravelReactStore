@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\products;
+namespace App\Http\Controllers\Api\Products;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use App\Http\Requests\Products\StoreCategoryRequest;
 use App\Http\Requests\Products\UpdateCategoryRequest;
+use Illuminate\Http\Request;
 
 
 class CategoryController extends Controller
@@ -15,9 +16,19 @@ class CategoryController extends Controller
 //route model binding (Category $category)
    
 //  GET all
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Category::latest()->get());   // 1. Récupérer catégories //2. Trier par date (desc) //3. Exécuter requête //4. Retourner JSON
+        $query = Category::query();
+
+        if ($request->has('is_active')) {
+            $query->where('is_active', filter_var($request->is_active, FILTER_VALIDATE_BOOLEAN));
+        }
+
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        return response()->json($query->latest()->get());   // 1. Récupérer catégories //2. Trier par date (desc) //3. Exécuter requête //4. Retourner JSON
     }
 
     //  CREATE

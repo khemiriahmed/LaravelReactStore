@@ -20,6 +20,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'ahmed@gmail.com',
             'password' =>Hash::make('123456'),
         ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@store.com',
+            'phone' => '+216 20 000 000',
+            'role' => 'admin',
+            'status' => 'active',
+            'password' => Hash::make('password'),
+        ]);
         $this->call([CategorySeeder::class,ProductSeeder::class,]);
         $this->call([CartSeeder::class,]);
     }

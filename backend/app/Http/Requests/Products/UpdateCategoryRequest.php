@@ -23,7 +23,7 @@ class UpdateCategoryRequest extends FormRequest
                 'max:255',
                 Rule::unique('categories', 'name')->ignore($this->category->id),
             ],
-
+            'is_active' => 'nullable|boolean',
         ];
     }
 }
