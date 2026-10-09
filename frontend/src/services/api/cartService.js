@@ -8,13 +8,13 @@ export const getCart = async () => {
 
 // ADD ITEM
 export const addToCart = async (data) => {
-  const res = await api.post("/cart/items", data);
+  const res = await api.post("/cart/add", data);
   return res.data.data;
 };
 
 // UPDATE ITEM
 export const updateCartItem = async (id, quantity) => {
-  const res = await api.put(`/cart/items/${id}`, {
+  const res = await api.put(`/cart/update/${id}`, {
     quantity,
   });
 
@@ -23,7 +23,7 @@ export const updateCartItem = async (id, quantity) => {
 
 // REMOVE ITEM
 export const removeCartItem = async (id) => {
-  const res = await api.delete(`/cart/items/${id}`);
+  const res = await api.delete(`/cart/remove/${id}`);
   return res.data.data;
 };
 

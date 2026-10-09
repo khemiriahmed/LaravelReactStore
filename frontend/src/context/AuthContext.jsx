@@ -9,6 +9,18 @@ export const AuthProvider = ({ children }) => {
 
   const token = localStorage.getItem("token");
 
+  // logout
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+  };
+
+  // login
+  const loginUser = (data) => {
+    localStorage.setItem("token", data.token);
+    setUser(data.user);
+  };
+
   // charger user connecté
   useEffect(() => {
     if (token) {
@@ -24,19 +36,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       setLoading(false);
     }
-  }, []);
-
-  //  login
-  const loginUser = (data) => {
-    localStorage.setItem("token", data.token);
-    setUser(data.user);
-  };
-
-  //  logout
-  const logout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-  };
+  }, [token]);
 
   return (
     <AuthContext.Provider value={{ user, loginUser, logout, loading }}>

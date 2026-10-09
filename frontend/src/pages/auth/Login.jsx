@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { login } from "../../services/api/auth";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -14,6 +15,7 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const { loginUser } = useAuth();
+  const { fetchCart } = useCart();
 
   const handleChange = (e) => {
     setForm({
@@ -32,11 +34,12 @@ function Login() {
 
       loginUser(res.data);
 
+      fetchCart();
+
       const role = res.data.user.role;
 
-      if (role === "admin") navigate("/admin/products");
-      else if (role === "vendor") navigate("/vendor/dashboard");
-      else navigate("/profile");
+      if (role === "admin") navigate("/admin");
+      else navigate("/");
     } catch (err) {
       setErrors(err.response.data.errors);
       console.log(err.response.data);

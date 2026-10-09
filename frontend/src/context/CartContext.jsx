@@ -20,14 +20,21 @@ export const CartProvider = ({ children }) => {
       const data = await getCart();
       setCart(data);
     } catch (err) {
-      console.log(err);
+      if (err.response?.status !== 401) {
+        console.log(err);
+      }
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchCart();
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchCart();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   // ADD
@@ -64,6 +71,10 @@ export const CartProvider = ({ children }) => {
       return total + item.quantity * item.product.price;
     }, 0) || 0;
 
+  // TOTAL ITEMS COUNT
+  const itemCount =
+    cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
+
   return (
     <CartContext.Provider
       value={{
@@ -74,6 +85,7 @@ export const CartProvider = ({ children }) => {
         removeItem,
         clear,
         totalPrice,
+        itemCount,
         fetchCart,
       }}
     >

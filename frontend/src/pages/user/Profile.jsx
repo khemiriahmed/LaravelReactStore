@@ -72,13 +72,11 @@ function Profile() {
         <div className="flex items-center gap-4">
           <img
             src={
-              preview
-                ? preview
-                : user?.avatar
-                  ? "http://localhost:8000" + user.avatar
-                  : "https://ui-avatars.com/api/?name=" + user?.name
+              preview ||
+              user?.avatar ||
+              "https://ui-avatars.com/api/?name=" + user?.name
             }
-            className="w-16 h-16 rounded-full"
+            className="w-16 h-16 rounded-full object-cover"
           />
 
           <input type="file" onChange={handleFile} />

@@ -5,7 +5,7 @@ import ProductSidebar from "../../../components/admin/ProductSidebar";
 import ConfirmModal from "../../../components/ui/ConfirmModal";
 
 function AdminProductList() {
-  const { products, meta, fetchProducts, removeProduct } = useProducts();
+  const { products, fetchProducts, removeProduct } = useProducts();
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isOpen, setIsOpen] = useState(false);

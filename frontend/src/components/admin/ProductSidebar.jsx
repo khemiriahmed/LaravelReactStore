@@ -36,7 +36,7 @@ function ProductSidebar({
         category_id: product.category_id ?? "",
       });
 
-      setPreview(product.image || null);
+      setPreview(product.images?.[0]?.image_path || null);
     }
   }, [product]);
 
@@ -94,7 +94,7 @@ function ProductSidebar({
   };
 
   if (!product) return null;
-console.log("PRODUCT:", product);
+
   return (
     <div className="fixed inset-0 z-50 flex pointer-events-none">
 
@@ -120,12 +120,13 @@ console.log("PRODUCT:", product);
         {/* ================= VIEW MODE ================= */}
         {mode === "view" && (
           <>
-            <h2 className="text-xl font-bold mb-3">{product.name} hhhhh</h2>
+            <h2 className="text-xl font-bold mb-3">{product.name}</h2>
 
-            {product.images[0].image_path && (
+            {product.images[0]?.image_path && (
               <img
                 src={product.images[0].image_path}
                 className="w-full h-48 object-cover mb-3 rounded"
+                alt={product.name}
               />
             )}
 

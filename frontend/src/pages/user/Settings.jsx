@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { updatePassword } from "../../services/api/auth";
+import { useNavigate } from "react-router-dom";
 
 function Settings() {
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
 
   const [form, setForm] = useState({
@@ -116,7 +118,10 @@ function Settings() {
       {/* 🚪 Logout */}
       <div className="bg-white p-6 rounded shadow text-center">
         <button
-          onClick={logout}
+          onClick={() => {
+            logout();
+            navigate("/");
+          }}
           className="bg-red-500 text-white px-6 py-2 rounded"
         >
           Logout 🚪

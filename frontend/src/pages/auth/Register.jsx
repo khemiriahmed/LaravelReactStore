@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { register } from "../../services/api/auth";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -17,6 +18,7 @@ function Register() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const { loginUser } = useAuth();
+  const { fetchCart } = useCart();
 
   const handleChange = (e) => {
     setForm({
@@ -36,7 +38,9 @@ function Register() {
 
       loginUser(res.data);
 
-      navigate("/dashboard");
+      fetchCart();
+
+      navigate("/");
     } catch (err) {
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
