@@ -110,6 +110,20 @@ npm run dev
 Frontend runs on `http://localhost:3000`, backend on `http://localhost:8000`.
 Make sure `VITE_BACKEND_URL` points to the API in `frontend/.env`.
 
+##  API Documentation (auto-generated)
+
+The REST API documentation is generated automatically from the code (routes, controllers, FormRequests and API Resources) with [dedoc/scramble](https://scramble.dedoc.co) — **no annotations required**.
+
+With the backend running, open:
+
+```
+http://localhost:8000/docs/api
+```
+
+* Interactive UI (Stoplight Elements) with "Try it out" support.
+* Raw OpenAPI spec: `http://localhost:8000/docs/api.json` (also exported via `php artisan scramble:export`).
+* Sanctum bearer auth is detected automatically from the `auth:sanctum` middleware.
+
 ##  API Authentication
 
 This project uses **Laravel Sanctum** for secure authentication.
